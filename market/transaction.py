@@ -52,6 +52,9 @@ class Transaction:
         total_value = self.get_total_value()
         if self.__buyer is None or self.__buyer.capital < total_value:
             return False
+        if self.__seller is not None and hasattr(self.__seller, "get_portfolio_quantity"):
+            if self.__seller.get_portfolio_quantity(self.__instrument.symbol) < self.__quantity:
+                return False
 
         self.__buyer.capital = self.__buyer.capital - total_value
         if self.__seller is not None:
@@ -62,10 +65,6 @@ class Transaction:
             try:
                 self.__seller.remove_from_portfolio(self.__instrument.symbol, self.__quantity)
             except ValueError:
-                self.__buyer.capital = self.__buyer.capital + total_value
-                if self.__seller is not None:
-                    self.__seller.capital = self.__seller.capital - total_value
-                self.__buyer.remove_from_portfolio(self.__instrument.symbol, self.__quantity)
                 return False
 
         self.__settled = True
