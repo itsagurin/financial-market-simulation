@@ -1,4 +1,4 @@
-"""Decline event implementation."""
+"""Implementacja zdarzenia spadku."""
 
 from __future__ import annotations
 
@@ -8,16 +8,16 @@ from event.event import Event
 
 
 class DeclineEvent(Event):
-    """Event that moderately decreases market prices."""
+    """Zdarzenie, które umiarkowanie obniża ceny rynkowe."""
 
     def __init__(self) -> None:
-        """Initializes a random negative decline event."""
+        """Inicjalizuje losowe, negatywne zdarzenie spadku."""
         super().__init__("DECLINE", -random.uniform(0.01, 0.05))
 
     def apply(self, instrument) -> None:
-        """Applies decline effect to instrument.
-
+        """Stosuje efekt spadku na instrumencie.
+        
         Args:
-            instrument: Financial instrument to update.
+            instrument: Instrument finansowy do zaktualizowania.
         """
         instrument.update_price(self._impact * (1 + instrument.volatility * 0.3))

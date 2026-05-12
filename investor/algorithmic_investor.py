@@ -1,4 +1,4 @@
-"""Algorithmic investor strategy implementation."""
+"""Implementacja strategii inwestora algorytmicznego."""
 
 from __future__ import annotations
 
@@ -6,26 +6,26 @@ from investor.investor import Investor
 
 
 class AlgorithmicInvestor(Investor):
-    """Trend-following investor based on short price windows."""
+    """Inwestor podążający za trendem opartym na krótkich oknach cenowych."""
 
     def __init__(self, name: str, capital: float) -> None:
-        """Initializes algorithmic investor with medium risk tolerance.
-
+        """Inicjalizuje inwestora algorytmicznego ze średnią tolerancją ryzyka.
+        
         Args:
-            name: Investor name.
-            capital: Starting capital.
+            name: Nazwa inwestora.
+            capital: Kapitał początkowy.
         """
         super().__init__(name, capital, risk_tolerance=0.5)
         self.__trend_window_size: int = 3
 
     def decide_action(self, market) -> str:
-        """Decides action based on trend analysis.
-
+        """Podejmuje decyzję na podstawie analizy trendu.
+        
         Args:
-            market: The market instance.
-
+            market: Instancja rynku.
+            
         Returns:
-            Action description string.
+            Ciąg opisujący akcję.
         """
         for instrument in market.instruments:
             trend = self.analyze_trend(instrument)
@@ -40,13 +40,13 @@ class AlgorithmicInvestor(Investor):
         return "WAIT"
 
     def analyze_trend(self, instrument) -> float:
-        """Computes normalized trend using the latest price window.
-
+        """Oblicza znormalizowany trend przy użyciu najnowszego okna cenowego.
+        
         Args:
-            instrument: Instrument to evaluate.
-
+            instrument: Instrument do oceny.
+            
         Returns:
-            Positive value for uptrend, negative for downtrend.
+            Wartość dodatnia dla trendu wzrostowego, ujemna dla spadkowego.
         """
         history = instrument.price_history
         if len(history) < 2:
@@ -64,18 +64,18 @@ class AlgorithmicInvestor(Investor):
 
     @property
     def trend_window_size(self) -> int:
-        """Returns number of data points used in trend analysis."""
+        """Zwraca liczbę punktów danych używanych w analizie trendu."""
         return self.__trend_window_size
 
     @trend_window_size.setter
     def trend_window_size(self, value: int) -> None:
-        """Sets trend window size.
-
+        """Ustawia rozmiar okna trendu.
+        
         Args:
-            value: Positive number of points to analyze.
-
+            value: Dodatnia liczba punktów do analizy.
+            
         Raises:
-            ValueError: If value is not positive.
+            ValueError: Jeśli wartość nie jest dodatnia.
         """
         if value <= 0:
             raise ValueError(f"trend_window_size must be positive, got {value}")

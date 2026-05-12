@@ -1,4 +1,4 @@
-"""Abstract base investor with common trading behavior."""
+"""Abstrakcyjny inwestor bazowy z typowymi zachowaniami handlowymi."""
 
 from __future__ import annotations
 
@@ -6,18 +6,18 @@ from abc import ABC, abstractmethod
 
 
 class Investor(ABC):
-    """Abstract investor defining common state and behavior for all strategies."""
+    """Abstrakcyjny inwestor definiujący wspólny stan i zachowanie dla wszystkich strategii."""
 
     def __init__(self, name: str, capital: float, risk_tolerance: float) -> None:
-        """Initializes base investor state.
-
+        """Inicjalizuje bazowy stan inwestora.
+        
         Args:
-            name: Investor display name.
-            capital: Available cash capital.
-            risk_tolerance: Relative risk tolerance in range [0.0, 1.0].
-
+            name: Nazwa wyświetlana inwestora.
+            capital: Dostępny kapitał gotówkowy.
+            risk_tolerance: Relatywna tolerancja ryzyka w zakresie [0.0, 1.0].
+            
         Raises:
-            ValueError: If capital is negative or risk_tolerance is outside [0.0, 1.0].
+            ValueError: Jeśli kapitał jest ujemny lub tolerancja ryzyka jest poza zakresem [0.0, 1.0].
         """
         if capital < 0:
             raise ValueError(f"Capital cannot be negative, got {capital}")
@@ -34,25 +34,25 @@ class Investor(ABC):
 
     @abstractmethod
     def decide_action(self, market) -> str:
-        """Decides and executes an action for the current epoch.
-
+        """Podejmuje decyzję i wykonuje akcję w bieżącej epoce.
+        
         Args:
-            market: Current market state.
-
+            market: Bieżący stan rynku.
+            
         Returns:
-            Action description string.
+            Ciąg opisujący akcję.
         """
 
     def buy(self, market, instrument, quantity: int) -> object:
-        """Attempts to buy instrument units from market liquidity.
-
+        """Próbuje kupić jednostki instrumentu z płynności rynkowej.
+        
         Args:
-            market: Market instance for execution.
-            instrument: Instrument to buy.
-            quantity: Number of units to buy.
-
+            market: Instancja rynku do wykonania.
+            instrument: Instrument do kupienia.
+            quantity: Liczba jednostek do kupienia.
+            
         Returns:
-            Settled Transaction object, or None when unsuccessful.
+            Rozliczony obiekt Transaction lub None w przypadku niepowodzenia.
         """
         if quantity <= 0:
             return None
@@ -68,15 +68,15 @@ class Investor(ABC):
         return transaction
 
     def sell(self, market, instrument, quantity: int) -> object:
-        """Attempts to sell instrument units to market liquidity.
-
+        """Próbuje sprzedać jednostki instrumentu do płynności rynkowej.
+        
         Args:
-            market: Market instance for execution.
-            instrument: Instrument to sell.
-            quantity: Number of units to sell.
-
+            market: Instancja rynku do wykonania.
+            instrument: Instrument do sprzedania.
+            quantity: Liczba jednostek do sprzedania.
+            
         Returns:
-            Settled Transaction object, or None when unsuccessful.
+            Rozliczony obiekt Transaction lub None w przypadku niepowodzenia.
         """
         if quantity <= 0:
             return None
@@ -94,27 +94,27 @@ class Investor(ABC):
         return transaction
 
     def wait_(self) -> None:
-        """Logs a wait action for the current epoch."""
+        """Loguje akcję oczekiwania w bieżącej epoce."""
         self._action_history.append("WAIT")
 
     def notify_market_state(self, market, event) -> None:
-        """Receives market event notification.
-
+        """Otrzymuje powiadomienie o zdarzeniu rynkowym.
+        
         Args:
-            market: Current market state.
-            event: Event occurring in the current epoch.
+            market: Bieżący stan rynku.
+            event: Zdarzenie występujące w bieżącej epoce.
         """
         _ = market
         self._action_history.append(f"EVENT {event.event_type}")
 
     def get_portfolio_value(self, market) -> float:
-        """Calculates net worth as cash capital plus instrument holdings.
-
+        """Oblicza wartość netto jako kapitał gotówkowy plus posiadane instrumenty.
+        
         Args:
-            market: Market used to obtain instrument prices.
-
+            market: Rynek użyty do uzyskania cen instrumentów.
+            
         Returns:
-            Total portfolio value.
+            Całkowita wartość portfela.
         """
         total = self._capital
         for symbol, quantity in self._portfolio.items():
@@ -124,25 +124,25 @@ class Investor(ABC):
         return total
 
     def add_to_portfolio(self, symbol: str, quantity: int) -> None:
-        """Adds quantity of symbol to portfolio.
-
+        """Dodaje ilość symbolu do portfela.
+        
         Args:
-            symbol: Instrument symbol.
-            quantity: Units to add.
+            symbol: Symbol instrumentu.
+            quantity: Jednostki do dodania.
         """
         if quantity <= 0:
             return
         self._portfolio[symbol] = self._portfolio.get(symbol, 0) + quantity
 
     def remove_from_portfolio(self, symbol: str, quantity: int) -> None:
-        """Removes quantity of symbol from portfolio.
-
+        """Usuwa ilość symbolu z portfela.
+        
         Args:
-            symbol: Instrument symbol.
-            quantity: Units to remove.
-
+            symbol: Symbol instrumentu.
+            quantity: Jednostki do usunięcia.
+            
         Raises:
-            ValueError: If resulting quantity would be negative.
+            ValueError: Jeśli wynikowa ilość byłaby ujemna.
         """
         if quantity <= 0:
             return
@@ -158,32 +158,32 @@ class Investor(ABC):
         self._portfolio[symbol] = new_value
 
     def get_portfolio_quantity(self, symbol: str) -> int:
-        """Returns held quantity for symbol."""
+        """Zwraca posiadaną ilość symbolu."""
         return self._portfolio.get(symbol, 0)
 
     def is_bankrupt(self) -> bool:
-        """Returns whether investor has no remaining cash capital."""
+        """Zwraca informację, czy inwestor nie ma już kapitału gotówkowego."""
         return self._capital <= 0.0
 
     @property
     def name(self) -> str:
-        """Returns investor name."""
+        """Zwraca nazwę inwestora."""
         return self._name
 
     @property
     def capital(self) -> float:
-        """Returns available cash capital."""
+        """Zwraca dostępny kapitał gotówkowy."""
         return self._capital
 
     @capital.setter
     def capital(self, value: float) -> None:
-        """Sets available capital after validation.
-
+        """Ustawia dostępny kapitał po walidacji.
+        
         Args:
-            value: New capital value.
-
+            value: Nowa wartość kapitału.
+            
         Raises:
-            ValueError: If value is negative.
+            ValueError: Jeśli wartość jest ujemna.
         """
         if value < 0:
             raise ValueError(f"Capital cannot be negative, got {value}")
@@ -191,21 +191,21 @@ class Investor(ABC):
 
     @property
     def risk_tolerance(self) -> float:
-        """Returns risk tolerance value."""
+        """Zwraca wartość tolerancji ryzyka."""
         return self._risk_tolerance
 
     @property
     def portfolio(self) -> dict:
-        """Returns a copy of the current portfolio mapping."""
+        """Zwraca kopię bieżącego mapowania portfela."""
         return self._portfolio.copy()
 
     @property
     def action_history(self) -> list[str]:
-        """Returns a copy of logged investor actions."""
+        """Zwraca kopię zalogowanych akcji inwestora."""
         return self._action_history.copy()
 
     def __repr__(self) -> str:
-        """Returns a compact textual representation of investor."""
+        """Zwraca zwartą reprezentację tekstową inwestora."""
         return (
             f"Investor(name='{self._name}', capital={self._capital}, "
             f"risk_tolerance={self._risk_tolerance})"

@@ -1,4 +1,4 @@
-"""Simulation orchestration for the financial market project."""
+"""Orkiestracja symulacji dla projektu rynku finansowego."""
 
 from __future__ import annotations
 
@@ -9,16 +9,16 @@ from market import FinancialInstrument, InstrumentType, Market
 
 
 class Simulation:
-    """Controls simulation epochs, state history, and CSV result export."""
+    """Kontroluje epoki symulacji, historię stanów i eksport wyników do CSV."""
 
     def __init__(self, total_epochs: int = 20) -> None:
-        """Initializes simulation with market, instruments, and investors.
-
+        """Inicjalizuje symulację z rynkiem, instrumentami i inwestorami.
+        
         Args:
-            total_epochs: Number of epochs to run.
-
+            total_epochs: Liczba epok do uruchomienia.
+            
         Raises:
-            ValueError: If total_epochs is not positive.
+            ValueError: Jeśli total_epochs nie jest dodatnie.
         """
         if total_epochs <= 0:
             raise ValueError(f"total_epochs must be positive, got {total_epochs}")
@@ -49,7 +49,7 @@ class Simulation:
         self.__investors.append(AlgorithmicInvestor("Algo1", 50000.0))
 
     def run(self) -> None:
-        """Runs all epochs in sequence by calling step for each epoch."""
+        """Uruchamia wszystkie epoki w sekwencji, wywołując step dla każdej epoki."""
         print("=== Financial Market Simulation ===")
         print(f"Starting simulation with {self.__total_epochs} epochs...\n")
 
@@ -61,7 +61,7 @@ class Simulation:
         print(f"Total transactions: {self.__market.get_total_transaction_count()}")
 
     def step(self) -> None:
-        """Executes one simulation epoch and appends summary row to history."""
+        """Wykonuje jedną epokę symulacji i dołącza wiersz podsumowania do historii."""
         next_epoch = self.__market.current_epoch + 1
         print(f"--- Epoch {next_epoch} ---")
 
@@ -89,10 +89,10 @@ class Simulation:
         )
 
     def export_csv(self, filename: str) -> None:
-        """Exports simulation history rows to CSV.
-
+        """Eksportuje wiersze historii symulacji do pliku CSV.
+        
         Args:
-            filename: Output CSV file path.
+            filename: Ścieżka do wyjściowego pliku CSV.
         """
         fieldnames = [
             "epoch",
@@ -115,15 +115,15 @@ class Simulation:
 
     @property
     def history(self) -> list[dict]:
-        """Returns a copy of simulation history."""
+        """Zwraca kopię historii symulacji."""
         return [row.copy() for row in self.__history]
 
     @property
     def market(self) -> Market:
-        """Returns the market instance used by the simulation."""
+        """Zwraca instancję rynku używaną przez symulację."""
         return self.__market
 
     @property
     def investors(self) -> list[Investor]:
-        """Returns a copy of the investor list."""
+        """Zwraca kopię listy inwestorów."""
         return self.__investors.copy()

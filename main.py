@@ -1,10 +1,10 @@
-"""Entry point for the financial market simulation application."""
+"""Punkt wejściowy dla aplikacji symulacji rynku finansowego."""
 
 from simulation import Simulation
 
 
 def main() -> None:
-    """Runs the financial market simulation and exports results to CSV."""
+    """Uruchamia symulację rynku finansowego i eksportuje wyniki do pliku CSV."""
     sim = Simulation(total_epochs=20)
     sim.run()
     sim.export_csv("simulation_results.csv")
@@ -12,3 +12,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+

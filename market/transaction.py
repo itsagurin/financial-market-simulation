@@ -1,4 +1,4 @@
-"""Transaction model describing a single trade operation."""
+"""Model transakcji opisujący pojedynczą operację handlową."""
 
 from __future__ import annotations
 
@@ -6,7 +6,7 @@ from market.financial_instrument import FinancialInstrument
 
 
 class Transaction:
-    """Represents one transaction between a buyer and a seller."""
+    """Reprezentuje jedną transakcję między kupującym a sprzedającym."""
 
     def __init__(
         self,
@@ -17,18 +17,18 @@ class Transaction:
         price: float,
         epoch: int,
     ) -> None:
-        """Initializes a transaction object.
-
+        """Inicjalizuje obiekt transakcji.
+        
         Args:
-            buyer: Investor-like object that buys the instrument.
-            seller: Investor-like object that sells the instrument or None.
-            instrument: Financial instrument being traded.
-            quantity: Number of units traded.
-            price: Per-unit price used for settlement.
-            epoch: Epoch index when transaction occurred.
-
+            buyer: Obiekt podobny do inwestora, który kupuje instrument.
+            seller: Obiekt podobny do inwestora, który sprzedaje instrument lub None.
+            instrument: Instrument finansowy będący przedmiotem obrotu.
+            quantity: Liczba wymienionych jednostek.
+            price: Cena za jednostkę użyta do rozliczenia.
+            epoch: Indeks epoki, w której wystąpiła transakcja.
+            
         Raises:
-            ValueError: If quantity is not positive or price is not positive.
+            ValueError: Jeśli ilość lub cena nie są dodatnie.
         """
         if quantity <= 0:
             raise ValueError(f"Quantity must be positive, got {quantity}")
@@ -44,10 +44,10 @@ class Transaction:
         self.__settled: bool = False
 
     def settle(self) -> bool:
-        """Executes settlement by transferring capital and portfolio units.
-
+        """Wykonuje rozliczenie poprzez transfer kapitału i jednostek portfela.
+        
         Returns:
-            True if settlement succeeded, otherwise False.
+            True, jeśli rozliczenie powiodło się, w przeciwnym razie False.
         """
         total_value = self.get_total_value()
         if self.__buyer is None or self.__buyer.capital < total_value:
@@ -68,46 +68,46 @@ class Transaction:
         return True
 
     def get_total_value(self) -> float:
-        """Returns total transaction value: quantity multiplied by price."""
+        """Zwraca całkowitą wartość transakcji: ilość pomnożona przez cenę."""
         return self.__quantity * self.__price
 
     @property
     def buyer(self):
-        """Returns the buyer reference."""
+        """Zwraca odniesienie do kupującego."""
         return self.__buyer
 
     @property
     def seller(self):
-        """Returns the seller reference."""
+        """Zwraca odniesienie do sprzedającego."""
         return self.__seller
 
     @property
     def instrument(self) -> FinancialInstrument:
-        """Returns the traded instrument."""
+        """Zwraca handlowany instrument."""
         return self.__instrument
 
     @property
     def quantity(self) -> int:
-        """Returns the traded quantity."""
+        """Zwraca wymienioną ilość."""
         return self.__quantity
 
     @property
     def price(self) -> float:
-        """Returns the per-unit transaction price."""
+        """Zwraca cenę jednostkową transakcji."""
         return self.__price
 
     @property
     def epoch(self) -> int:
-        """Returns the epoch when transaction occurred."""
+        """Zwraca epokę, w której wystąpiła transakcja."""
         return self.__epoch
 
     @property
     def settled(self) -> bool:
-        """Returns whether transaction was settled successfully."""
+        """Zwraca informację, czy transakcja została pomyślnie rozliczona."""
         return self.__settled
 
     def __repr__(self) -> str:
-        """Returns a compact transaction representation."""
+        """Zwraca zwartą reprezentację transakcji."""
         buyer_name = getattr(self.__buyer, "name", "None")
         seller_name = getattr(self.__seller, "name", "None")
         return (

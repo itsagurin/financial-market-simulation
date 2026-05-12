@@ -1,4 +1,4 @@
-"""Conservative investor strategy implementation."""
+"""Implementacja strategii konserwatywnego inwestora."""
 
 from __future__ import annotations
 
@@ -7,25 +7,25 @@ from market.financial_instrument import InstrumentType
 
 
 class ConservativeInvestor(Investor):
-    """Cautious investor preferring low-risk behavior and waiting."""
+    """Ostrożny inwestor preferujący zachowania niskiego ryzyka i wyczekiwanie."""
 
     def __init__(self, name: str, capital: float) -> None:
-        """Initializes conservative investor with low risk tolerance.
-
+        """Inicjalizuje konserwatywnego inwestora z niską tolerancją ryzyka.
+        
         Args:
-            name: Investor name.
-            capital: Starting capital.
+            name: Nazwa inwestora.
+            capital: Kapitał początkowy.
         """
         super().__init__(name, capital, risk_tolerance=0.2)
 
     def decide_action(self, market) -> str:
-        """Makes a conservative decision based on market sentiment.
-
+        """Podejmuje konserwatywną decyzję na podstawie nastrojów rynkowych.
+        
         Args:
-            market: The market instance.
-
+            market: Instancja rynku.
+            
         Returns:
-            Action description string.
+            Ciąg opisujący akcję.
         """
         if market.sentiment > 0.3:
             instrument = self.__find_safest_instrument(market)
@@ -44,13 +44,13 @@ class ConservativeInvestor(Investor):
         return "WAIT"
 
     def __find_safest_instrument(self, market) -> object:
-        """Finds the lowest-volatility bond instrument.
-
+        """Znajduje instrument obligacyjny o najniższej zmienności.
+        
         Args:
-            market: The market instance.
-
+            market: Instancja rynku.
+            
         Returns:
-            FinancialInstrument instance or None.
+            Instancja FinancialInstrument lub None.
         """
         bonds = [
             instrument

@@ -1,4 +1,4 @@
-"""Public exports for investor package."""
+"""Publiczne eksporty dla pakietu investor."""
 
 from .investor import Investor
 from .conservative_investor import ConservativeInvestor

@@ -1,4 +1,4 @@
-"""Abstract base class for market events."""
+"""Abstrakcyjna klasa bazowa dla zdarzeń rynkowych."""
 
 from __future__ import annotations
 
@@ -6,36 +6,36 @@ from abc import ABC, abstractmethod
 
 
 class Event(ABC):
-    """Base class for all market events."""
+    """Klasa bazowa dla wszystkich zdarzeń rynkowych."""
 
     def __init__(self, event_type: str, impact: float) -> None:
-        """Initializes common event fields.
-
+        """Inicjalizuje wspólne pola zdarzeń.
+        
         Args:
-            event_type: Event type identifier.
-            impact: Relative event impact.
+            event_type: Identyfikator typu zdarzenia.
+            impact: Relatywny wpływ zdarzenia.
         """
         self._event_type: str = event_type
         self._impact: float = impact
 
     @abstractmethod
     def apply(self, instrument) -> None:
-        """Applies this event to a specific instrument.
-
+        """Stosuje to zdarzenie do konkretnego instrumentu.
+        
         Args:
-            instrument: Target financial instrument.
+            instrument: Docelowy instrument finansowy.
         """
 
     @property
     def event_type(self) -> str:
-        """Returns event type label."""
+        """Zwraca etykietę typu zdarzenia."""
         return self._event_type
 
     @property
     def impact(self) -> float:
-        """Returns event impact value."""
+        """Zwraca wartość wpływu zdarzenia."""
         return self._impact
 
     def __repr__(self) -> str:
-        """Returns compact event representation."""
+        """Zwraca zwartą reprezentację zdarzenia."""
         return f"Event(type='{self._event_type}', impact={self._impact})"

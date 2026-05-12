@@ -1,4 +1,4 @@
-"""Growth event implementation."""
+"""Implementacja zdarzenia wzrostu."""
 
 from __future__ import annotations
 
@@ -8,16 +8,16 @@ from event.event import Event
 
 
 class GrowthEvent(Event):
-    """Event that increases market prices with volatility sensitivity."""
+    """Zdarzenie, które podnosi ceny rynkowe z uwzględnieniem zmienności."""
 
     def __init__(self) -> None:
-        """Initializes a random positive growth event."""
+        """Inicjalizuje losowe, pozytywne zdarzenie wzrostu."""
         super().__init__("GROWTH", random.uniform(0.02, 0.08))
 
     def apply(self, instrument) -> None:
-        """Applies growth effect to instrument.
-
+        """Stosuje efekt wzrostu na instrumencie.
+        
         Args:
-            instrument: Financial instrument to update.
+            instrument: Instrument finansowy do zaktualizowania.
         """
         instrument.update_price(self._impact * (1 + instrument.volatility * 0.5))

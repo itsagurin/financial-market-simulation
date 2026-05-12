@@ -1,4 +1,4 @@
-"""Aggressive investor strategy implementation."""
+"""Implementacja strategii agresywnego inwestora."""
 
 from __future__ import annotations
 
@@ -8,25 +8,25 @@ from investor.investor import Investor
 
 
 class AggressiveInvestor(Investor):
-    """Risk-seeking investor with frequent randomized trading."""
+    """Inwestor poszukujący ryzyka z częstym, losowym handlem."""
 
     def __init__(self, name: str, capital: float) -> None:
-        """Initializes aggressive investor with high risk tolerance.
-
+        """Inicjalizuje agresywnego inwestora z wysoką tolerancją ryzyka.
+        
         Args:
-            name: Investor name.
-            capital: Starting capital.
+            name: Nazwa inwestora.
+            capital: Kapitał początkowy.
         """
         super().__init__(name, capital, risk_tolerance=0.8)
 
     def decide_action(self, market) -> str:
-        """Makes a random aggressive decision.
-
+        """Podejmuje losową, agresywną decyzję.
+        
         Args:
-            market: The market instance.
-
+            market: Instancja rynku.
+            
         Returns:
-            Action description string.
+            Ciąg opisujący akcję.
         """
         roll = random.random()
 
@@ -49,13 +49,13 @@ class AggressiveInvestor(Investor):
         return "WAIT"
 
     def __get_random_instrument(self, market) -> object:
-        """Returns a random instrument from the market.
-
+        """Zwraca losowy instrument z rynku.
+        
         Args:
-            market: The market instance.
-
+            market: Instancja rynku.
+            
         Returns:
-            Random FinancialInstrument or None.
+            Losowy FinancialInstrument lub None.
         """
         if not market.instruments:
             return None

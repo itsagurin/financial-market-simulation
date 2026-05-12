@@ -1,4 +1,4 @@
-"""Market module that coordinates events, instruments, and transactions."""
+"""Moduł rynkowy, który koordynuje zdarzenia, instrumenty i transakcje."""
 
 from __future__ import annotations
 
@@ -10,72 +10,72 @@ from market.transaction import Transaction
 
 
 class _LiquidityProvider:
-    """Simple internal counterparty used for sell-side transaction settlement."""
+    """Prosta wewnętrzna strona przeciwna używana do rozliczania transakcji po stronie sprzedaży."""
 
     def __init__(self) -> None:
-        """Initializes a large-capital internal counterparty."""
+        """Inicjalizuje wewnętrzną stronę przeciwną z dużym kapitałem."""
         self.__capital = 10**15
 
     @property
     def capital(self) -> float:
-        """Returns available liquidity capital."""
+        """Zwraca dostępny kapitał płynności."""
         return self.__capital
 
     @capital.setter
     def capital(self, value: float) -> None:
-        """Updates available liquidity capital."""
+        """Aktualizuje dostępny kapitał płynności."""
         self.__capital = value
 
     @property
     def name(self) -> str:
-        """Returns counterparty display name."""
+        """Zwraca nazwę wyświetlaną strony przeciwnej."""
         return "Market"
 
     def add_to_portfolio(self, symbol: str, quantity: int) -> None:
-        """Consumes purchased units without tracking holdings."""
+        """Konsumuje zakupione jednostki bez śledzenia posiadanych zasobów."""
         _ = symbol
         _ = quantity
 
     def remove_from_portfolio(self, symbol: str, quantity: int) -> None:
-        """No-op removal to satisfy transaction interface."""
+        """Operacja pusta (no-op) usunięcia, aby spełnić interfejs transakcji."""
         _ = symbol
         _ = quantity
 
 
 class Market:
-    """Represents the shared market state for all investors."""
+    """Reprezentuje wspólny stan rynku dla wszystkich inwestorów."""
 
     def __init__(self) -> None:
-        """Initializes an empty market."""
+        """Inicjalizuje pusty rynek."""
         self.__instruments: list[FinancialInstrument] = []
         self.__transaction_history: list[Transaction] = []
         self.__sentiment: float = 0.0
         self.__current_epoch: int = 0
 
     def add_instrument(self, instrument: FinancialInstrument) -> None:
-        """Adds a financial instrument to the market.
-
+        """Dodaje instrument finansowy do rynku.
+        
         Args:
-            instrument: Instrument instance to register.
+            instrument: Instancja instrumentu do zarejestrowania.
         """
         self.__instruments.append(instrument)
 
     def add_transaction(self, transaction: Transaction) -> None:
-        """Adds a settled transaction to history.
-
+        """Dodaje rozliczoną transakcję do historii.
+        
         Args:
-            transaction: Transaction to record.
+            transaction: Transakcja do zarejestrowania.
         """
         self.__transaction_history.append(transaction)
 
     def simulate_epoch(self, investors: list) -> object:
-        """Executes a full simulation epoch.
-
+        """Wykonuje pełną epokę symulacji.
+        
         Args:
-            investors: Investors participating in this epoch.
-
+            investors: Inwestorzy uczestniczący w tej epoce.
+            
         Returns:
-            The generated event instance for this epoch.
+            Wygenerowana instancja zdarzenia dla tej epoki.
         """
         self.__current_epoch += 1
         event = self.generate_event()
@@ -89,10 +89,10 @@ class Market:
         return event
 
     def generate_event(self) -> object:
-        """Randomly generates a market event based on configured probabilities.
-
+        """Losowo generuje zdarzenie rynkowe na podstawie skonfigurowanych prawdopodobieństw.
+        
         Returns:
-            Instance of a specific Event subclass.
+            Instancja konkretnej podklasy Event.
         """
         roll = random.random()
         if roll < 0.40:
@@ -104,27 +104,27 @@ class Market:
         return BubbleEvent()
 
     def apply_event(self, event) -> None:
-        """Applies event effect to all instruments and updates sentiment.
-
+        """Stosuje efekt zdarzenia do wszystkich instrumentów i aktualizuje nastroje.
+        
         Args:
-            event: Event object to apply.
+            event: Obiekt zdarzenia do zastosowania.
         """
         for instrument in self.__instruments:
             event.apply(instrument)
         self.__sentiment = max(-1.0, min(1.0, self.__sentiment + event.impact * 0.5))
 
     def execute_transaction(self, buyer, seller, instrument, quantity: int, price: float):
-        """Creates, settles, and records a transaction.
-
+        """Tworzy, rozlicza i rejestruje transakcję.
+        
         Args:
-            buyer: Buying party or None.
-            seller: Selling party or None.
-            instrument: Traded instrument.
-            quantity: Number of units.
-            price: Price per unit.
-
+            buyer: Kupująca strona lub None.
+            seller: Sprzedająca strona lub None.
+            instrument: Handlowany instrument.
+            quantity: Liczba jednostek.
+            price: Cena za jednostkę.
+            
         Returns:
-            Settled Transaction instance or None if settlement fails.
+            Instancja rozliczonej transakcji lub None, jeśli rozliczenie się nie powiedzie.
         """
         buyer_party = buyer if buyer is not None else _LiquidityProvider()
         transaction = Transaction(
@@ -141,13 +141,13 @@ class Market:
         return None
 
     def get_instrument_by_symbol(self, symbol: str):
-        """Finds an instrument by symbol.
-
+        """Znajduje instrument po symbolu.
+        
         Args:
-            symbol: Instrument symbol.
-
+            symbol: Symbol instrumentu.
+            
         Returns:
-            FinancialInstrument instance or None if absent.
+            Instancja FinancialInstrument lub None w przypadku braku.
         """
         for instrument in self.__instruments:
             if instrument.symbol == symbol:
@@ -156,33 +156,33 @@ class Market:
 
     @property
     def instruments(self) -> list[FinancialInstrument]:
-        """Returns a copy of the instrument list."""
+        """Zwraca kopię listy instrumentów."""
         return self.__instruments.copy()
 
     @property
     def transaction_history(self) -> list[Transaction]:
-        """Returns a copy of transaction history."""
+        """Zwraca kopię historii transakcji."""
         return self.__transaction_history.copy()
 
     @property
     def sentiment(self) -> float:
-        """Returns current market sentiment."""
+        """Zwraca bieżący nastrój rynkowy."""
         return self.__sentiment
 
     @sentiment.setter
     def sentiment(self, value: float) -> None:
-        """Sets sentiment clamped to the range [-1.0, 1.0].
-
+        """Ustawia nastrój ograniczony do zakresu [-1.0, 1.0].
+        
         Args:
-            value: New sentiment value.
+            value: Nowa wartość nastroju.
         """
         self.__sentiment = max(-1.0, min(1.0, value))
 
     @property
     def current_epoch(self) -> int:
-        """Returns the current epoch number."""
+        """Zwraca numer bieżącej epoki."""
         return self.__current_epoch
 
     def get_total_transaction_count(self) -> int:
-        """Returns total number of recorded transactions."""
+        """Zwraca całkowitą liczbę zarejestrowanych transakcji."""
         return len(self.__transaction_history)

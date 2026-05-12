@@ -1,4 +1,4 @@
-"""Crash event implementation."""
+"""Implementacja zdarzenia krachu rynkowego."""
 
 from __future__ import annotations
 
@@ -9,17 +9,17 @@ from market.financial_instrument import InstrumentType
 
 
 class CrashEvent(Event):
-    """Event that applies a severe market downturn."""
+    """Zdarzenie, które stosuje gwałtowny spadek na rynku."""
 
     def __init__(self) -> None:
-        """Initializes a random severe negative crash event."""
+        """Inicjalizuje losowe, gwałtowne negatywne zdarzenie krachu."""
         super().__init__("CRASH", -random.uniform(0.08, 0.20))
 
     def apply(self, instrument) -> None:
-        """Applies crash severity based on instrument type.
-
+        """Stosuje intensywność krachu w zależności od typu instrumentu.
+        
         Args:
-            instrument: Financial instrument to update.
+            instrument: Instrument finansowy do zaktualizowania.
         """
         if instrument.instrument_type == InstrumentType.CRYPTOCURRENCY:
             factor = 2.0

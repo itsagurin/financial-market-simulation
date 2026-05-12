@@ -1,4 +1,4 @@
-"""Public exports for event package."""
+"""Publiczne eksporty dla pakietu event."""
 
 from .event import Event
 from .growth_event import GrowthEvent
