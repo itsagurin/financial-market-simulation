@@ -62,10 +62,7 @@ class Transaction:
 
         self.__buyer.add_to_portfolio(self.__instrument.symbol, self.__quantity)
         if self.__seller is not None:
-            try:
-                self.__seller.remove_from_portfolio(self.__instrument.symbol, self.__quantity)
-            except ValueError:
-                return False
+            self.__seller.remove_from_portfolio(self.__instrument.symbol, self.__quantity)
 
         self.__settled = True
         return True
