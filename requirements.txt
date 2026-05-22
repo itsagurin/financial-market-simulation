@@ -1,2 +1,0 @@
-# No external dependencies required for core simulation.
-# Standard library only: abc, random, csv, enum, typing
