@@ -29,12 +29,18 @@ class AlgorithmicInvestor(Investor):
         """
         for instrument in market.instruments:
             trend = self.analyze_trend(instrument)
-            if trend > 0.05 and self.capital >= instrument.price:
-                if self.buy(market, instrument, 1) is not None:
-                    return f"BUY {instrument.symbol} x1"
+            if trend > 0.05:
+                max_affordable = int(self.capital // instrument.price)
+                buy_qty = min(10, max_affordable)
+                if buy_qty > 0:
+                    if self.buy(market, instrument, buy_qty) is not None:
+                        return f"BUY {instrument.symbol} x{buy_qty}"
             elif trend < -0.05 and self.get_portfolio_quantity(instrument.symbol) > 0:
-                if self.sell(market, instrument, 1) is not None:
-                    return f"SELL {instrument.symbol} x1"
+                held_qty = self.get_portfolio_quantity(instrument.symbol)
+                sell_qty = min(10, held_qty)
+                if sell_qty > 0:
+                    if self.sell(market, instrument, sell_qty) is not None:
+                        return f"SELL {instrument.symbol} x{sell_qty}"
 
         self.wait_()
         return "WAIT"

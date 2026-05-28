@@ -71,7 +71,8 @@ class Simulation:
         aapl = self.__market.get_instrument_by_symbol("AAPL")
         obl = self.__market.get_instrument_by_symbol("OBL2028")
         btc = self.__market.get_instrument_by_symbol("BTC")
-        investor_capitals = {investor.name: investor.capital for investor in self.__investors}
+        investor_portfolios = {investor.name: investor.get_portfolio_value(self.__market) for investor in self.__investors}
+        investor_cashes = {investor.name: investor.capital for investor in self.__investors}
 
         self.__history.append(
             {
@@ -82,9 +83,12 @@ class Simulation:
                 "avg_price_AAPL": round(aapl.get_average_price(), 2) if aapl else 0.0,
                 "avg_price_OBL2028": round(obl.get_average_price(), 2) if obl else 0.0,
                 "avg_price_BTC": round(btc.get_average_price(), 2) if btc else 0.0,
-                "capital_Anna": round(investor_capitals.get("Anna", 0.0), 2),
-                "capital_Bartek": round(investor_capitals.get("Bartek", 0.0), 2),
-                "capital_Algo1": round(investor_capitals.get("Algo1", 0.0), 2),
+                "capital_Anna": round(investor_portfolios.get("Anna", 0.0), 2),
+                "cash_Anna": round(investor_cashes.get("Anna", 0.0), 2),
+                "capital_Bartek": round(investor_portfolios.get("Bartek", 0.0), 2),
+                "cash_Bartek": round(investor_cashes.get("Bartek", 0.0), 2),
+                "capital_Algo1": round(investor_portfolios.get("Algo1", 0.0), 2),
+                "cash_Algo1": round(investor_cashes.get("Algo1", 0.0), 2),
             }
         )
 
@@ -103,8 +107,11 @@ class Simulation:
             "avg_price_OBL2028",
             "avg_price_BTC",
             "capital_Anna",
+            "cash_Anna",
             "capital_Bartek",
+            "cash_Bartek",
             "capital_Algo1",
+            "cash_Algo1",
         ]
         with open(filename, "w", newline="", encoding="utf-8") as file:
             writer = csv.DictWriter(file, fieldnames=fieldnames)

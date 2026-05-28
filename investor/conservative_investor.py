@@ -27,18 +27,20 @@ class ConservativeInvestor(Investor):
         Returns:
             Ciąg opisujący akcję.
         """
-        if market.sentiment > 0.3:
+        if market.sentiment >= -0.15:
             instrument = self.__find_safest_instrument(market)
-            if instrument is not None and self.capital >= instrument.price:
-                if self.buy(market, instrument, 1) is not None:
-                    return f"BUY {instrument.symbol} x1"
+            if instrument is not None:
+                quantity = 10
+                if self.capital >= instrument.price * quantity:
+                    if self.buy(market, instrument, quantity) is not None:
+                        return f"BUY {instrument.symbol} x{quantity}"
 
-        if market.sentiment < -0.5:
+        if market.sentiment < -0.3:
             for instrument in market.instruments:
-                if instrument.instrument_type in (InstrumentType.STOCK, InstrumentType.CRYPTOCURRENCY):
-                    if self.get_portfolio_quantity(instrument.symbol) > 0:
-                        if self.sell(market, instrument, 1) is not None:
-                            return f"SELL {instrument.symbol} x1"
+                if self.get_portfolio_quantity(instrument.symbol) > 0:
+                    quantity = min(5, self.get_portfolio_quantity(instrument.symbol))
+                    if self.sell(market, instrument, quantity) is not None:
+                        return f"SELL {instrument.symbol} x{quantity}"
 
         self.wait_()
         return "WAIT"
