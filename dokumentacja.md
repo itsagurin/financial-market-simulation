@@ -198,53 +198,53 @@ classDiagram
 ## 5. Diagram Obiektów
 Poniższy diagram przedstawia migawkę (ang. *snapshot*) stanu obiektów w pamięci podczas trwania **Epoki 1** po wykonaniu pierwszych zakupów przez inwestorów:
 ```mermaid
-objectDiagram
-    object Simulation_Inst {
+classDiagram
+    class Simulation_Inst {
         __total_epochs = 20
         __history_len = 1
     }
     
-    object Market_Inst {
+    class Market_Inst {
         __sentiment = 0.05
         __current_epoch = 1
     }
     
-    object AAPL_Stock {
+    class AAPL_Stock {
         __symbol = "AAPL"
         __price = 192.94
         __volatility = 0.15
         __type = InstrumentType.STOCK
     }
     
-    object OBL_Bond {
+    class OBL_Bond {
         __symbol = "OBL2028"
         __price = 105.47
         __volatility = 0.03
         __type = InstrumentType.BOND
     }
     
-    object Anna_Investor {
+    class Anna_Investor {
         _name = "Anna"
         _capital = 13915.67
         _risk_tolerance = 0.2
-        _portfolio = {"OBL2028": 10}
+        _portfolio = OBL2028 x10
     }
     
-    object Bartek_Investor {
+    class Bartek_Investor {
         _name = "Bartek"
         _capital = 31240.97
         _risk_tolerance = 0.8
-        _portfolio = {"OBL2028": 7}
+        _portfolio = OBL2028 x7
     }
     
-    object Algo1_Investor {
+    class Algo1_Investor {
         _name = "Algo1"
         _capital = 48013.23
         _risk_tolerance = 0.5
-        _portfolio = {"AAPL": 10}
+        _portfolio = AAPL x10
     }
     
-    object Trans_1 {
+    class Trans_1 {
         __quantity = 10
         __price = 105.47
         __settled = true
